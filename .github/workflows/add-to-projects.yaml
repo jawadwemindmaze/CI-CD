@@ -1,6 +1,7 @@
 name: Assign Issue to Project
 
 on:
+  workflow_dispatch:  # This line allows manual triggering of the workflow
   pull_request:
     types: [opened, edited, synchronize, reopened]
   push:
