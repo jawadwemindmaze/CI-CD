@@ -1,0 +1,69 @@
+name: Reminder Inactive PRs
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  remind-inactive-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reminder for Inactive PRs
+        uses: agrc/reminder-action@v1.0.11
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-reminder: 4
+          reminder-label: 'inactive'
+          only-issue-creators: false # Set to true if you only want to notify issue creators
+          only-assigned-issues: false # Set to true if you only want to notify assigned issues
+          ignore-issues-with: 'wontfix, duplicate' # Add labels to ignore
+
+
+# name: Reminder Inactive PRs
+
+# on:
+#   pull_request:
+#     types: [opened, edited, synchronize, reopened]
+#     branches:
+#       - develop
+#   push:
+#     branches:
+#       - develop
+
+# permissions:
+#   pull-requests: write
+
+# jobs:
+#   remind-inactive-pr:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16'
+
+#       - name: Install Octokit and other dependencies
+#         run: |
+#           npm install @octokit/action
+
+#       - name: Check for inactive PRs and comment
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           REPOSITORY_OWNER: ${{ github.repository_owner }}
+#           REPOSITORY_NAME: ${{ github.event.repository.name }}
+#           DAYS_SINCE_LAST_ACTIVITY: 4
+#         run:  node .github/scripts/reminder-inactive-pr.js
