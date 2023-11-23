@@ -17,6 +17,6 @@ jobs:
 
       - name: Mark PR as draft if prefixed with 'WIP'
         if: steps.check-title.outputs.is_wip == 'true'
-        uses: samuelmeuli/action-mark-pr-as-draft@v1
+        uses: voiceflow/draft-pr@latest
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
