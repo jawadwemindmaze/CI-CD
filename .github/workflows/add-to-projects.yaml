@@ -6,6 +6,8 @@ on:
     types: [opened]
   issues:
     types: [opened]
+env:
+  MY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   add-to-project:
@@ -14,6 +16,4 @@ jobs:
     steps:
       - uses: srggrs/assign-one-project-github-action@1.2.1
         with:
-          project: 'https://github.com/orgs/Sylvester-Team/projects/2'
-          column_name: 'To do'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          project: 'https://github.com/users/jawadwemindmaze/projects/1'
