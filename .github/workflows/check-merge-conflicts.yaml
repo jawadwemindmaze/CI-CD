@@ -1,0 +1,37 @@
+name: Check for Merge Conflicts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  conflict-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Find Merge Conflicts
+        id: conflicts
+        uses: zkamvar/merge-conflict-finder@v2
+        with:
+          base: ${{ github.event.pull_request.base.ref }}
+          head: ${{ github.event.pull_request.head.ref }}
+
+      - name: Comment on PR if conflicts are found
+        if: steps.conflicts.outputs.conflict == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const creator = context.payload.pull_request.user.login;
+            const assignees = context.payload.pull_request.assignees.map(a => a.login);
+            const assignee = assignees.length > 0 ? `@${assignees.join(' @')}` : '';
+            const comment = `@${creator} ${assignee}, this PR has conflicts that must be resolved. Please address the merge conflicts and update the PR.`;
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: comment
+            });
