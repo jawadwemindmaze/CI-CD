@@ -1,6 +1,7 @@
 name: Assign Issue to Project
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened]
   issues:
@@ -11,7 +12,8 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@main
+      - uses: srggrs/assign-one-project-github-action@1.2.1
         with:
-          project-url: https://github.com/orgs/Sylvester-Team/projects/2
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          project: 'https://github.com/orgs/Sylvester-Team/projects/2'
+          column_name: 'To do'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
