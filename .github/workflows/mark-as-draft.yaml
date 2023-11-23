@@ -1,0 +1,21 @@
+name: Mark WIP as Drafts
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+jobs:
+  mark-as-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR title has 'WIP' prefix (case-insensitive)
+        id: check-title
+        run: echo "::set-output name=is_wip::$(echo '${{ github.event.pull_request.title }}' | grep -qi '^WIP' && echo 'true' || echo 'false')"
+
+      - name: Mark PR as draft if prefixed with 'WIP'
+        if: steps.check-title.outputs.is_wip == 'true'
+        uses: samuelmeuli/action-mark-pr-as-draft@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
