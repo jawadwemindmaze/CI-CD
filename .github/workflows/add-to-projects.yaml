@@ -1,12 +1,11 @@
 name: Assign Issue to Project
 
 on:
-  workflow_dispatch:  # This line allows manual triggering of the workflow
   pull_request:
-    types: [opened, edited, synchronize, reopened]
-  push:
-    branches:
-      - develop
+    types: [opened]
+  issues:
+    types: [opened]
+
 jobs:
   add-to-project:
     name: Add issue to project
@@ -14,5 +13,5 @@ jobs:
     steps:
       - uses: actions/add-to-project@main
         with:
-          project-url: https://github.com/orgs/Sylvester-Team/projects/1
+          project-url: https://github.com/orgs/Sylvester-Team/projects/2
           github-token: ${{ secrets.GITHUB_TOKEN }}
