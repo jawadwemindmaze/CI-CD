@@ -1,6 +1,7 @@
 name: Mark WIP as Drafts
 
 on:
+  workflow_dispatch:  # This line allows manual triggering of the workflow
   pull_request:
   push:
     branches:
